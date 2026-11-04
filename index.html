@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rubrica – User Guide</title>
+<style>
+/* Layout: sticky contents sidebar on the left, guide on the right; stacks on narrow screens. */
+:root{--bg:#f6f5f2;--surface:#ffffff;--text:#1f1f1f;--muted:#5c5c5c;--accent:#a8302f;--accent-soft:#f7e6e5;
+--border:#e3dfd8;--code:#f1eee9;--tip:#e8f3ec;--tip-b:#2e7d4f;--warn:#fbeee0;--warn-b:#b5651d;--note:#eaf0f7;--note-b:#3a6ea5;
+color-scheme:light}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#161514;--surface:#1f1e1c;--text:#ecebe8;
+--muted:#a9a6a0;--accent:#e2726f;--accent-soft:#3a2524;--border:#34322f;--code:#2a2826;--tip:#1d2e24;--tip-b:#6fc391;
+--warn:#33281c;--warn-b:#e2a35e;--note:#1d2836;--note-b:#7fb0e6;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#161514;--surface:#1f1e1c;--text:#ecebe8;--muted:#a9a6a0;--accent:#e2726f;--accent-soft:#3a2524;
+--border:#34322f;--code:#2a2826;--tip:#1d2e24;--tip-b:#6fc391;--warn:#33281c;--warn-b:#e2a35e;--note:#1d2836;--note-b:#7fb0e6;
+color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:32px;max-width:1180px;margin:0 auto;
+padding-block:32px 80px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.sidebar{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 16px);align-self:start;
+max-height:calc(100vh - 32px - env(safe-area-inset-top, 0px));overflow-y:auto;
+background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 14px}
+.sidebar summary{list-style:none;cursor:pointer;font-weight:700;color:var(--accent);font-size:.8rem;
+letter-spacing:.08em;text-transform:uppercase;padding:0 6px 8px}
+.sidebar summary::-webkit-details-marker{display:none}
+.toc,.toc-sub{list-style:none;margin:0;padding:0}
+.toc>li{margin:1px 0}
+.toc a{display:block;padding:5px 8px;border-radius:7px;color:var(--text);text-decoration:none;font-size:.93rem;line-height:1.35}
+.toc-sub a{padding-left:22px;font-size:.86rem;color:var(--muted)}
+.toc a:hover{background:var(--accent-soft)}
+.toc a[aria-current="true"]{background:var(--accent-soft);color:var(--accent);font-weight:600}
+.page{min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:40px clamp(18px,5vw,56px)}
+h1,h2,h3{text-wrap:balance}
+h1{font-size:2.1rem;margin:0 0 .4em;color:var(--accent);letter-spacing:-.01em}
+h2{font-size:1.45rem;margin:2.2em 0 .6em;padding-top:.6em;border-top:1px solid var(--border)}
+h3{font-size:1.15rem;margin:1.6em 0 .4em}h4{font-size:1rem;margin:1.4em 0 .3em;color:var(--muted)}
+h2,h3,h4{scroll-margin-top:calc(env(safe-area-inset-top, 0px) + 16px)}
+p,li{max-width:72ch}a{color:var(--accent)}a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.page ul,.page ol{padding-left:1.4em}.page li{margin:.25em 0}
+code{background:var(--code);padding:.1em .35em;border-radius:5px;font-size:.92em}
+.table-wrap{overflow-x:auto;margin:1em 0;min-width:0}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;vertical-align:top;padding:.55em .75em;border-bottom:1px solid var(--border)}
+th{background:var(--accent-soft);font-weight:600}
+.callout{margin:1.2em 0;padding:.8em 1em;border-left:4px solid var(--note-b);background:var(--note);border-radius:8px}
+.callout.tip{border-color:var(--tip-b);background:var(--tip)}
+.callout.important,.callout.remember{border-color:var(--warn-b);background:var(--warn)}
+figure{margin:1.4em 0}
+figure img{display:block;max-width:100%;height:auto;border:1px solid var(--border);border-radius:10px}
+figcaption{color:var(--muted);font-size:.88rem;margin-top:.45em}
+.missing-image{border:1px dashed var(--border);border-radius:10px;padding:1.2em;color:var(--muted);font-size:.9rem;text-align:center}
+footer{grid-column:2;color:var(--muted);font-size:.85rem;text-align:center}
+@media (max-width:900px){
+ .layout{grid-template-columns:minmax(0,1fr);gap:16px}
+ .sidebar{position:static;max-height:none}
+ .sidebar:not([open]) summary{padding-bottom:0}
+ footer{grid-column:1}
+}
+@media print{body{background:#fff}.sidebar{display:none}.layout{display:block}.page{border:0;padding:0}h2{break-after:avoid}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+<div class="layout">
+<details class="sidebar" open>
+<summary>Contents</summary>
+<nav aria-label="Guide contents"><ol class='toc'><li><a href='#key-ideas'>Key ideas</a></li><li><a href='#the-main-page'>The main page</a></li><li><a href='#creating-a-rubric'>Creating a rubric</a><ol class='toc-sub'><li><a href='#building-a-rubric-from-scratch-step-by-step'>Building a rubric from scratch, step by step</a></li></ol></li><li><a href='#marking-a-piece-of-work'>Marking a piece of work</a><ol class='toc-sub'><li><a href='#1-rate-each-block'>1. Rate each block</a></li><li><a href='#2-add-comments'>2. Add comments</a></li><li><a href='#3-check-copy-or-download-the-feedback'>3. Check, copy or download the feedback</a></li><li><a href='#4-move-on-to-the-next-student'>4. Move on to the next student</a></li></ol></li><li><a href='#the-phrase-book'>The phrase book</a></li><li><a href='#the-feedback-panel'>The feedback panel</a><ol class='toc-sub'><li><a href='#buttons-at-the-bottom-of-the-panel'>Buttons at the bottom of the panel</a></li><li><a href='#formatting-the-feedback-owners'>Formatting the feedback (owners)</a></li></ol></li><li><a href='#editing-a-rubric'>Editing a rubric</a><ol class='toc-sub'><li><a href='#changing-blocks'>Changing blocks</a></li><li><a href='#saving'>Saving</a></li><li><a href='#the-edit-panel'>The edit panel</a></li></ol></li><li><a href='#sharing-a-rubric-with-colleagues'>Sharing a rubric with colleagues</a><ol class='toc-sub'><li><a href='#linking-straight-to-a-rubric'>Linking straight to a rubric</a></li></ol></li><li><a href='#sharing-the-rubric-with-students'>Sharing the rubric with students</a></li><li><a href='#how-the-overall-mark-is-calculated'>How the overall mark is calculated</a></li><li><a href='#archiving-a-rubric'>Archiving a rubric</a></li><li><a href='#icon-reference'>Icon reference</a></li><li><a href='#frequently-asked-questions'>Frequently asked questions</a></li></ol></nav>
+</details>
+<article class="page">
+<h1>Rubrica – User Guide</h1>
+<p>Rubrica helps you mark student work against a marking rubric and turn your marking into clear, consistent written feedback. You pick a level for each criterion, add comments (or reuse saved phrases), and Rubrica writes up the feedback for you, ready to copy or download as a PDF.</p>
+<p>This guide covers everything you can do in the app, in the order you are likely to need it.</p>
+<h2 id="key-ideas">Key ideas</h2>
+<div class='table-wrap'><table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td><strong>Rubric</strong></td><td>A marking scheme for one assessment, for example <em>International Politics UG Coursework</em>.</td></tr><tr><td><strong>Block</strong></td><td>One row of a rubric: usually a criterion such as <em>Argument</em> or <em>Referencing</em>, with its levels.</td></tr><tr><td><strong>Section</strong></td><td>A heading block that groups the blocks below it, such as <em>Marking Criteria</em> or <em>Comments and Suggestions</em>.</td></tr><tr><td><strong>Template</strong></td><td>A rubric that its owner has made available to everyone, which you can copy as the starting point for your own.</td></tr><tr><td><strong>Owner (Editor)</strong></td><td>Someone who can change a rubric and decide who has access to it.</td></tr><tr><td><strong>Grader</strong></td><td>Someone who can mark with a rubric but not change it.</td></tr><tr><td><strong>Grade mode / Edit mode</strong></td><td>Grade mode is for marking. Edit mode is for changing the rubric (owners only).</td></tr></tbody></table></div>
+<aside class='callout important'><strong>Important:</strong> Rubrica does <strong>not</strong> store students' marks or feedback. Everything you enter while marking stays on screen until you press 🔄 or open another rubric. Always copy the feedback or download the PDF before moving on to the next student.</aside>
+<h2 id="the-main-page">The main page</h2>
+<figure><img src='media/01-main-page.webp' alt='The main page: create a rubric, your rubrics and the templates, with 🔗 › and 🗑 on each row' loading='lazy'><figcaption>The main page: create a rubric, your rubrics and the templates, with 🔗 › and 🗑 on each row</figcaption></figure>
+<p>When you open Rubrica you see the main page, with three areas:</p>
+<ul><li><strong>New Marking Rubric</strong>: create a new rubric (see <a href="#creating-a-rubric">Creating a rubric</a>).</li><li><strong>My Marking Rubrics</strong>: every rubric you own or grade with. Type in the <strong>Search</strong> box to filter the list. Each row shows the rubric's title, who created it and your access (Editor or Grader), plus:<ul><li><strong>🔗</strong>: copy a link that opens the rubric directly (see <a href="#linking-straight-to-a-rubric">Linking straight to a rubric</a>).</li><li><strong>›</strong>: open the rubric.</li><li><strong>🗑</strong>: archive the rubric (owners only, see <a href="#archiving-a-rubric">Archiving a rubric</a>).</li></ul></li><li><strong>Templates</strong>: rubrics shared with everyone, most-used first. Use <strong>Search</strong> to filter, and <strong>›</strong> to open one.</li></ul>
+<p>The 🏠 icon at the top left brings you back to the main page from anywhere.</p>
+<h2 id="creating-a-rubric">Creating a rubric</h2>
+<ol><li>On the main page, under <strong>New Marking Rubric</strong>, type a <strong>Title</strong>.<ul><li>Use only letters, numbers, spaces, hyphens and underscores.</li><li>Titles must be unique. If the title is already taken you will be told to choose another.</li></ul></li><li>Optionally, choose a <strong>Template</strong> to copy its blocks. You can pick any template or rubric you have access to.<ul><li>Leave it empty (<em>"None – start a blank rubric"</em>) to start from scratch. The rubric opens empty, straight in <strong>Edit</strong> mode: click <strong>+</strong> to add your first block.</li></ul></li><li>Click <strong>➕</strong>.</li></ol>
+<figure><img src='media/02-create-rubric.gif' alt='Creating a rubric: type a title, choose a template, then click ➕' loading='lazy'><figcaption>Creating a rubric: type a title, choose a template, then click ➕</figcaption></figure>
+<p>Rubrica creates the rubric, copies the template's blocks (if you chose one), makes you its owner and opens it. You can now <a href="#editing-a-rubric">edit it</a> or start <a href="#marking-a-piece-of-work">marking</a>.</p>
+<aside class='callout tip'><strong>Tip:</strong> Changing the title of an existing rubric in Edit mode and pressing <strong>Save</strong> creates a <strong>new copy</strong> under the new title. The original rubric is left unchanged. This is a quick way to make a variant of a rubric.</aside>
+<h3 id="building-a-rubric-from-scratch-step-by-step">Building a rubric from scratch, step by step</h3>
+<p><strong>Step 1: Create a blank rubric.</strong> Type a title, leave <strong>Template</strong> on <em>"None – start a blank rubric"</em> and click <strong>➕</strong>. The empty rubric opens straight in <strong>Edit</strong> mode.</p>
+<figure><img src='media/02a-blank-rubric.gif' alt='Creating a blank rubric: type a title, leave the template empty, click ➕' loading='lazy'><figcaption>Creating a blank rubric: type a title, leave the template empty, click ➕</figcaption></figure>
+<p><strong>Step 2: Add a block.</strong> Click the red <strong>+</strong> at the bottom left. A new block appears at the end of the rubric, and its settings open in the panel on the right.</p>
+<figure><img src='media/02b-new-block.gif' alt='Adding a block with the red + button' loading='lazy'><figcaption>Adding a block with the red + button</figcaption></figure>
+<p><strong>Step 3: Name the block.</strong> Click the block's title (on the block itself or at the top of the panel) and type a new name, for example the question or criterion being assessed.</p>
+<figure><img src='media/02c-rename-block.gif' alt='Renaming a block' loading='lazy'><figcaption>Renaming a block</figcaption></figure>
+<p><strong>Step 4: Choose the block type.</strong> In the panel, open <strong>Type</strong> and choose how the block is marked: for example <em>Met/Partially Met/Not Met</em>, <em>UG</em> or <em>PG Standard Criteria</em>, <em>Custom Criteria</em>, <em>Number</em>, <em>Text</em> or <em>Section</em>. The block on the left changes to match.</p>
+<figure><img src='media/02d-block-type.gif' alt='Changing the block type' loading='lazy'><figcaption>Changing the block type</figcaption></figure>
+<p><strong>Step 5: Set the scores.</strong> For each level, type the points in the box next to the 🧮 calculator icon. Under <strong>Score</strong>, choose how the block counts towards the overall mark (for example <em>Add/Remove</em>) and its weight (<strong>1x</strong>, <strong>2x</strong>…). See <a href="#how-the-overall-mark-is-calculated">How the overall mark is calculated</a>.</p>
+<figure><img src='media/02e-block-scores.gif' alt='Adding scores to each level and choosing how the scores are combined' loading='lazy'><figcaption>Adding scores to each level and choosing how the scores are combined</figcaption></figure>
+<p><strong>Step 6: Add sections (optional).</strong> To group blocks under a heading, add a block and set its <strong>Type</strong> to <strong>Section</strong>. A section is a heading only, with no marks. Use the ⌃ ⌄ arrows on the left to move it above the blocks it introduces.</p>
+<figure><img src='media/02f-section.gif' alt='Creating a Section block' loading='lazy'><figcaption>Creating a Section block</figcaption></figure>
+<figure><img src='media/02g-section-result.png' alt='The result: a Section heading above Question 1' loading='lazy'><figcaption>The result: a Section heading above Question 1</figcaption></figure>
+<p>Repeat steps 2–5 for each block, then click <strong>💾 Save</strong>. Switch the toggle back to <strong>Grade</strong> to start marking.</p>
+<h2 id="marking-a-piece-of-work">Marking a piece of work</h2>
+<p>Open the rubric from <strong>My Marking Rubrics</strong>. It opens in <strong>Grade mode</strong>: the rubric is on the left, and the feedback is built on the right.</p>
+<h3 id="1-rate-each-block">1. Rate each block</h3>
+<figure><img src='media/03-marking.webp' alt='Marking in Grade mode: the rubric on the left, the feedback building on the right' loading='lazy'><figcaption>Marking in Grade mode: the rubric on the left, the feedback building on the right</figcaption></figure>
+<p>Each block has a number, a title and a way of rating the work. What you see depends on the block's type:</p>
+<div class='table-wrap'><table><thead><tr><th>Block type</th><th>How you rate it</th></tr></thead><tbody><tr><td><strong>UG Standard Criteria</strong></td><td>Pick a level from the drop-down (Low Fail, Fail, Third, Lower Second, High Second, Low First, High First). Each level comes with its descriptor.</td></tr><tr><td><strong>PG Standard Criteria</strong></td><td>Pick a level (Low Fail, Fail, Pass, Merit, Distinction, High Distinction).</td></tr><tr><td><strong>Met / Partially Met / Not Met</strong></td><td>Pick one of the three.</td></tr><tr><td><strong>Custom Criteria</strong></td><td>Pick one of the levels the rubric's owner defined.</td></tr><tr><td><strong>Number</strong></td><td>Drag the slider or type a score between the minimum and maximum shown.</td></tr><tr><td><strong>Text</strong></td><td>No rating, just a comment box.</td></tr><tr><td><strong>Section</strong></td><td>A heading only: nothing to rate.</td></tr></tbody></table></div>
+<figure><img src='media/03b-number-blocks.webp' alt='Number blocks: drag the slider or type a score. The feedback shows the comment followed by the score' loading='lazy'><figcaption>Number blocks: drag the slider or type a score. The feedback shows the comment followed by the score</figcaption></figure>
+<h3 id="2-add-comments">2. Add comments</h3>
+<p>Each block has an <strong>Additional comments</strong> box. Type anything you want to say about that criterion. Your comments appear in the feedback straight away.</p>
+<ul><li><strong>💡</strong> opens the <a href="#the-phrase-book">phrase book</a> for that block, so you can insert a saved phrase instead of typing.</li><li><strong>💾</strong> appears once you have typed a comment that isn't in the phrase book yet. Click it to save the comment as a phrase you can reuse.</li></ul>
+<p>If a block has <strong>guidelines for students</strong>, they show under the block's title. Students see the same text in the Gradebook, its PDF and the student webpage. <strong>Guidelines for markers</strong> are saved with the block, but are not yet shown while marking.</p>
+<figure><img src='media/04-comment-box.webp' alt='A phrase inserted from the phrase book appears in the block&#x27;s comment box and in the feedback' loading='lazy'><figcaption>A phrase inserted from the phrase book appears in the block's comment box and in the feedback</figcaption></figure>
+<h3 id="3-check-copy-or-download-the-feedback">3. Check, copy or download the feedback</h3>
+<p>The <a href="#the-feedback-panel">feedback panel</a> on the right shows the written feedback as you go. When you're happy with it:</p>
+<ul><li>click <strong>📋</strong> to copy it, then paste it into your marking system, or</li><li>click <strong>PDF</strong> to download it.</li></ul>
+<h3 id="4-move-on-to-the-next-student">4. Move on to the next student</h3>
+<p>Click <strong>🔄</strong> at the bottom of the feedback panel. This clears all levels, scores and comments so you can start the next piece of work.</p>
+<aside class='callout remember'><strong>Remember:</strong> 🔄 cannot be undone. Copy or download the feedback first.</aside>
+<h2 id="the-phrase-book">The phrase book</h2>
+<p>The phrase book stores comments you write often, so you can reuse them with one click. Open it with the <strong>📕</strong> button in the toolbar, or with <strong>💡</strong> on a block.</p>
+<ol><li>Click <strong>💡</strong> on the block you want to comment on, or click inside its comment box. The phrase book opens for that block.</li><li>Choose a phrase:<ul><li><strong>Most Frequently Used</strong> lists the phrases saved for this block, most-used first.</li><li><strong>Search</strong> looks through all the phrases you have saved, for any rubric or block.</li></ul></li><li><strong>Click a phrase</strong>, or the import arrow next to it. It is added to the block's comment box.</li></ol>
+<p>To add your own phrase, type it in a block's comment box and click <strong>💾</strong>.</p>
+<figure><img src='media/05-phrase-book.webp' alt='The phrase book: Most Frequently Used and Search' loading='lazy'><figcaption>The phrase book: Most Frequently Used and Search</figcaption></figure>
+<aside class='callout tip'><strong>Tip:</strong> If you insert a phrase from <strong>Search</strong> that was saved for a different block, 💾 will still show. Clicking it saves a copy of the phrase for this block as well.</aside>
+<p>Click <strong>📝</strong> in the toolbar to return to the feedback.</p>
+<h2 id="the-feedback-panel">The feedback panel</h2>
+<p>The <strong>📝 Feedback</strong> panel on the right builds the written feedback from your marking:</p>
+<ul><li>Section headings appear only when at least one block in that section has a level, score or comment.</li><li>Each block shows its title, the descriptor of the level you chose and your comments.</li></ul>
+<h3 id="buttons-at-the-bottom-of-the-panel">Buttons at the bottom of the panel</h3>
+<figure><img src='media/06-feedback-buttons.gif' alt='Clicking PDF: allow the download if the browser asks, then click the file next to &quot;PDF ready&quot; to download it' loading='lazy'><figcaption>Clicking PDF: allow the download if the browser asks, then click the file next to "PDF ready" to download it</figcaption></figure>
+<div class='table-wrap'><table><thead><tr><th>Button</th><th>What it does</th></tr></thead><tbody><tr><td>🔄</td><td>Clears the rubric, ready for the next student.</td></tr><tr><td>🧮</td><td>Adds or removes the overall mark line, <em>"Feedback consistent with …"</em>, at the bottom of the feedback.</td></tr><tr><td>📋</td><td>Copies the feedback to the clipboard.</td></tr><tr><td><strong>PDF</strong></td><td>Creates a PDF of the feedback. The bottom bar then shows <strong>"PDF ready – click the file to download ➜"</strong>: click the file name to download it. The download link disappears after a minute.</td></tr></tbody></table></div>
+<figure><img src='media/06b-feedback-pdf.png' alt='An example of the downloaded feedback PDF' loading='lazy'><figcaption>An example of the downloaded feedback PDF</figcaption></figure>
+<aside class='callout note'><strong>Note:</strong> Copying isn't possible inside Power Apps Studio, Teams or SharePoint. If 📋 shows a warning, open Rubrica in its own browser tab.</aside>
+<h3 id="formatting-the-feedback-owners">Formatting the feedback (owners)</h3>
+<p>Owners see an <strong>Edit</strong> button in the panel's header. It shows or hides a formatting bar where you can choose how the feedback looks:</p>
+<ul><li><strong>Section</strong>: bold, italics and bullets for section headings.</li><li><strong>Block</strong>: bold, italics and bullets for block titles.</li><li><strong>Criteria</strong>: bullets, and whether to show each criterion's title, the level text and the marks.</li><li><strong>Select ☑</strong>: choose which blocks appear in the feedback.</li></ul>
+<p>These settings are saved with the rubric, so every marker sees the same layout.</p>
+<h2 id="editing-a-rubric">Editing a rubric</h2>
+<p>Only owners can edit a rubric. Use the <strong>Grade / Edit</strong> switch at the right of the toolbar:</p>
+<ul><li>Switch to <strong>Edit</strong> to change the rubric.</li><li>Switch back to <strong>Grade</strong> to mark with it.</li></ul>
+<p>While you have unsaved changes the switch is greyed out: <strong>Save</strong> or <strong>Undo</strong> first.</p>
+<h3 id="changing-blocks">Changing blocks</h3>
+<p>In Edit mode each block gains extra controls on its left (hover over any of them to see what it does):</p>
+<div class='table-wrap'><table><thead><tr><th>Control</th><th>What it does</th></tr></thead><tbody><tr><td><strong>⌃</strong> / <strong>⌄</strong> around the number</td><td>Move the block up or down. The numbers update automatically.</td></tr><tr><td>Duplicate icon</td><td>Add a copy of the block just below it, including its current title, type, levels and scores.</td></tr><tr><td>🗑</td><td>Remove the block.</td></tr><tr><td>⚙</td><td>Open the block's settings in the right-hand panel: type, level names and scores, score type and weight, and guidelines for students and for markers. Hover over the icons in the panel for a short explanation of each setting.</td></tr></tbody></table></div>
+<p>You can also rename a block by clicking its title directly.</p>
+<p>At the bottom left of the rubric, the red <strong>+</strong> adds a new block at the end.</p>
+<figure><img src='media/07-edit-mode.gif' alt='Switching to Edit mode: the block controls appear on the left and the edit panel opens on the right' loading='lazy'><figcaption>Switching to Edit mode: the block controls appear on the left and the edit panel opens on the right</figcaption></figure>
+<h3 id="saving">Saving</h3>
+<ul><li><strong>Save</strong> appears in the toolbar when you have changes. Click it to store them.</li><li><strong>Undo</strong> discards all changes since you last saved.</li><li>To save the rubric under a <strong>new name</strong>, change the title at the top and click <strong>Save</strong>. This creates a copy.</li></ul>
+<h3 id="the-edit-panel">The edit panel</h3>
+<p>In Edit mode the right-hand panel shows the editing tools, organised in tabs. Hover over a tab to see its name.</p>
+<figure><img src='media/08-edit-tabs.gif' alt='The edit panel tabs: hover over a tab to see what it does' loading='lazy'><figcaption>The edit panel tabs: hover over a tab to see what it does</figcaption></figure>
+<div class='table-wrap'><table><thead><tr><th>Tab</th><th>What it's for</th></tr></thead><tbody><tr><td>🗂️ <strong>All</strong></td><td>Show every editing section at once.</td></tr><tr><td>✍️ <strong>Edit and import</strong></td><td>Browse the blocks of any rubric you can access, and import them.</td></tr><tr><td>👤 <strong>Access</strong></td><td>Choose who can edit and who can mark with the rubric.</td></tr><tr><td>🖨️ <strong>Feedback format</strong></td><td>Lay out the version of the rubric that students see.</td></tr><tr><td>🔢 <strong>Mark calculation</strong></td><td>Set how each block counts towards the overall mark.</td></tr><tr><td>⚙️ <strong>Settings</strong></td><td>Archive the rubric.</td></tr></tbody></table></div>
+<h4 id="edit-and-import">✍️ Edit and import</h4>
+<p>Choose a rubric from the drop-down to see its blocks. For each block:</p>
+<ul><li>the left icon shows the block's type (hover to read it);</li><li><strong>⚙</strong> edits the block (only for the rubric you're editing);</li><li><strong>⟵</strong> imports the block into the rubric you're editing;</li><li><strong>🗑</strong> removes the block.</li></ul>
+<h2 id="sharing-a-rubric-with-colleagues">Sharing a rubric with colleagues</h2>
+<p>Open the rubric, switch to <strong>Edit</strong>, then go to the <strong>👤 Access</strong> tab.</p>
+<p><strong>To add someone:</strong></p>
+<ol><li>Type at least two letters of their name or email in the search box. A list of matching people appears below it: click the right person (their row turns pink with a ✓).</li><li>Choose <strong>Grader</strong> (can mark) or <strong>Editor</strong> (owner: can mark and edit).</li><li>Click the add-person icon.</li></ol>
+<figure><img src='media/09-access.gif' alt='Adding a colleague: type part of their name, click them in the list, choose Grader or Editor, then click the add icon' loading='lazy'><figcaption>Adding a colleague: type part of their name, click them in the list, choose Grader or Editor, then click the add icon</figcaption></figure>
+<p><strong>To remove someone:</strong> click the red <strong>✕</strong> at the end of their row. You can't remove yourself, or the last remaining owner.</p>
+<p><strong>Available to Everybody at City:</strong> tick this to turn the rubric into a template. Everyone at City can then see it in <strong>Templates</strong> and copy it, but only owners can change it.</p>
+<aside class='callout note'><strong>Note:</strong> Access changes take up to a minute to apply in SharePoint.</aside>
+<h3 id="linking-straight-to-a-rubric">Linking straight to a rubric</h3>
+<p>Click <strong>🔗</strong> to copy a web link to a rubric: in the toolbar of an open rubric, or next to any rubric or template on the main page. Paste it into Moodle, an email or Teams: anyone who opens it signs in and lands directly on that rubric, skipping the main page.</p>
+<ul><li>The link only works for people who have access: owners, graders, or everyone if the rubric is a template. Anyone else sees a message asking them to request access from the owner.</li><li>The link keeps working if the rubric is renamed. It stops working if the rubric is archived.</li></ul>
+<h2 id="sharing-the-rubric-with-students">Sharing the rubric with students</h2>
+<p>Switch to <strong>Edit</strong> and open the <strong>🖨️ Feedback format</strong> tab. Here you prepare a version of the whole rubric (all blocks and level descriptors) for students to read before they submit.</p>
+<figure><img src='media/10-feedback-format.gif' alt='The Feedback format tab: choose how sections, blocks and criteria appear, with a live preview' loading='lazy'><figcaption>The Feedback format tab: choose how sections, blocks and criteria appear, with a live preview</figcaption></figure>
+<ol><li>Use the formatting bar to choose how sections, blocks and criteria look. The preview below updates as you go.</li><li>Click <strong>☑ Select</strong> to choose which blocks to include, for example to leave out guidance meant only for markers.</li><li>Then either:<ul><li>click <strong>Update webpage</strong> to publish the rubric as a page on the Gradebook SharePoint site, then <strong>Open webpage ↗</strong> to view it. Allow about a minute for changes to appear, and refresh the page if needed. The page can be read by anyone at City. Share its address with your students.</li><li>click <strong>PDF</strong> to download it. The button changes to <strong>"PDF ready ➜"</strong>: click the file name next to it to download.</li></ul></li></ol>
+<h2 id="how-the-overall-mark-is-calculated">How the overall mark is calculated</h2>
+<p>Open the <strong>🔢 Mark calculation</strong> tab in Edit mode. Each block shows its title, its level scores, and two settings:</p>
+<ul><li><strong>How the block counts</strong>:<ul><li><strong>No Score</strong>: the block doesn't affect the mark (useful for sections and text-only blocks).</li><li><strong>Average</strong>: the block's score is averaged with the other averaged blocks.</li><li><strong>Add/Remove</strong>: the block's score is added to or taken off the total (useful for penalties or bonuses).</li></ul></li><li><strong>Weight</strong> (for example <strong>1x</strong>, <strong>2x</strong>): how much the block counts relative to the others.</li></ul>
+<p>While marking, the overall mark can be added to the feedback with <strong>🧮</strong>.</p>
+<figure><img src='media/11-mark-calculation.gif' alt='The Mark calculation tab: choose how each block counts towards the overall mark and its weight' loading='lazy'><figcaption>The Mark calculation tab: choose how each block counts towards the overall mark and its weight</figcaption></figure>
+<h2 id="archiving-a-rubric">Archiving a rubric</h2>
+<p>Archiving hides a rubric from Rubrica without deleting anything. Only owners can archive.</p>
+<ul><li>From the main page: click <strong>🗑</strong> next to the rubric, then click it <strong>again</strong> to confirm. It turns red after the first click.</li></ul>
+<figure><img src='media/12-archive.webp' alt='The bin turns red after the first click; click again to archive' loading='lazy'><figcaption>The bin turns red after the first click; click again to archive</figcaption></figure>
+<ul><li>Or, in Edit mode, open <strong>⚙️ Settings</strong> and click <strong>🗄 Archive this rubric</strong>, then click again to confirm.</li></ul>
+<p>Archived rubrics no longer appear in any list. To bring one back, ask the app's administrator. Its title stays reserved, so you can't create a new rubric with the same name.</p>
+<h2 id="icon-reference">Icon reference</h2>
+<div class='table-wrap'><table><thead><tr><th>Icon</th><th>Where</th><th>Meaning</th></tr></thead><tbody><tr><td>🏠</td><td>Top left</td><td>Back to the main page</td></tr><tr><td>›</td><td>Main page</td><td>Open the rubric</td></tr><tr><td>🗑</td><td>Main page</td><td>Archive the rubric (click twice)</td></tr><tr><td>➕</td><td>Main page</td><td>Create a new rubric</td></tr><tr><td>📝</td><td>Toolbar</td><td>Show the feedback panel</td></tr><tr><td>📕</td><td>Toolbar</td><td>Show the phrase book</td></tr><tr><td>🔗</td><td>Toolbar, main page</td><td>Copy a link that opens this rubric directly</td></tr><tr><td>Grade / Edit</td><td>Toolbar</td><td>Switch between marking and editing (owners)</td></tr><tr><td>💡</td><td>Comment box</td><td>Open the phrase book for this block</td></tr><tr><td>💾</td><td>Comment box</td><td>Save this comment to the phrase book</td></tr><tr><td>🔄</td><td>Feedback panel</td><td>Clear all marks for the next student</td></tr><tr><td>🧮</td><td>Feedback panel</td><td>Show or hide the overall mark line</td></tr><tr><td>📋</td><td>Feedback panel</td><td>Copy the feedback</td></tr><tr><td>PDF</td><td>Feedback panel / Feedback format</td><td>Create a PDF to download</td></tr><tr><td>Edit</td><td>Feedback panel header</td><td>Show or hide the formatting bar (owners)</td></tr><tr><td>+ (red)</td><td>Bottom left of rubric (Edit mode)</td><td>Add a new block</td></tr><tr><td>⌃ ⌄</td><td>Left of each block (Edit mode)</td><td>Move the block up or down</td></tr><tr><td>⚙</td><td>Left of each block (Edit mode)</td><td>Open the block settings panel</td></tr><tr><td>🗂️ ✍️ 👤 🖨️ 🔢 ⚙️</td><td>Edit panel</td><td>All · Edit and import · Access · Feedback format · Mark calculation · Settings</td></tr><tr><td>✕</td><td>Access tab</td><td>Remove a person from the rubric</td></tr></tbody></table></div>
+<aside class='callout tip'><strong>Tip:</strong> Hover over any button to see a short description of what it does.</aside>
+<h2 id="frequently-asked-questions">Frequently asked questions</h2>
+<p><strong>I can't see a rubric a colleague shared with me.</strong> Ask them to check that you are listed in its <strong>👤 Access</strong> tab. Changes can take a minute to apply. Then return to the main page.</p>
+<p><strong>I can't switch to Edit mode.</strong> Only owners can edit. If you need to change the rubric, ask an owner to add you as an <strong>Editor</strong>. If you are an owner and the switch is greyed out, you have unsaved changes, or the title in the box clashes with another rubric.</p>
+<p><strong>My feedback disappeared.</strong> Rubrica doesn't save marking. It was cleared by 🔄, or by opening another rubric. Always copy or download before moving on.</p>
+<p><strong>The 📋 button shows a warning instead of copying.</strong> Your browser or Teams is blocking the clipboard. Open Rubrica in its own browser tab, or use <strong>PDF</strong> instead.</p>
+<p><strong>The student webpage shows an old version.</strong> Updates take about a minute. Refresh the page. If it still looks old, click <strong>Update webpage</strong> again.</p>
+<p><strong>I archived a rubric by mistake.</strong> Contact the app's administrator, who can restore it. Nothing was deleted.</p>
+</article>
+<footer>Rubrica user guide</footer>
+</div>
+<script>
+(function(){
+  var sidebar=document.querySelector('.sidebar');
+  var wide=window.matchMedia('(min-width: 901px)');
+  function syncOpen(){ if(wide.matches){ sidebar.open=true; } }
+  syncOpen(); if(wide.addEventListener){ wide.addEventListener('change', syncOpen); }
+  // Close the collapsed contents after picking a section on a phone
+  sidebar.addEventListener('click', function(e){ if(e.target.closest('a') && !wide.matches){ sidebar.open=false; } });
+  // Highlight the section being read
+  var links={}; document.querySelectorAll('.toc a').forEach(function(a){ links[a.getAttribute('href').slice(1)]=a; });
+  var heads=Array.prototype.slice.call(document.querySelectorAll('.page h2[id], .page h3[id]'));
+  function update(){
+    var current=null;
+    for(var i=0;i<heads.length;i++){ if(heads[i].getBoundingClientRect().top<=120){ current=heads[i]; } else { break; } }
+    if(!current && heads.length){ current=heads[0]; }
+    Object.keys(links).forEach(function(k){ links[k].removeAttribute('aria-current'); });
+    if(!current) return;
+    var a=links[current.id];
+    if(current.tagName==='H3'){
+      // also mark its parent section
+      for(var j=heads.indexOf(current);j>=0;j--){ if(heads[j].tagName==='H2'){ links[heads[j].id].setAttribute('aria-current','true'); break; } }
+    }
+    if(a){ a.setAttribute('aria-current','true'); }
+  }
+  var ticking=false;
+  window.addEventListener('scroll', function(){ if(!ticking){ ticking=true; requestAnimationFrame(function(){ update(); ticking=false; }); } }, {passive:true});
+  update();
+})();
+</script>
+</body>
+</html>
